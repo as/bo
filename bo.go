@@ -12,13 +12,19 @@ package bo
 func P16l(b []byte, v int16) {
 	b[0] = byte(v)
 	b[1] = byte(v >> 8)
-
 }
 
 // P16b packs 16 bits into b via big endian
 func P16b(b []byte, v int16) {
 	b[0] = byte(v >> 8)
 	b[1] = byte(v)
+}
+
+func P32b(b []byte, v int32) {
+	b[0] = byte(v >> 24)
+	b[1] = byte(v >> 16)
+	b[2] = byte(v >> 8)
+	b[3] = byte(v)
 }
 
 func P32l(b []byte, v int32) {
@@ -28,11 +34,12 @@ func P32l(b []byte, v int32) {
 	b[3] = byte(v >> 24)
 }
 
-func P32b(b []byte, v int32) {
-	b[0] = byte(v >> 24)
-	b[1] = byte(v >> 16)
-	b[2] = byte(v >> 8)
-	b[3] = byte(v)
+func Pintb(b []byte, v int) {
+	P32b(b, int32(v))
+}
+
+func Pintl(b []byte, v int) {
+	P32l(b, int32(v))
 }
 
 func P64l(b []byte, v int64) {
@@ -82,7 +89,15 @@ func G32b(b []byte) int32 {
            int32(b[2]) <<  8 | 
            int32(b[3])
 }
- 
+
+func Gintb(b []byte) int {
+	return int(G32b(b))
+}
+
+func Gintl(b []byte) int {
+	return int(G32l(b))
+}
+
 func G64l(b []byte) int64 { 
 	return int64(b[0])       | 
            int64(b[1]) <<  8 | 
